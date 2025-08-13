@@ -36,10 +36,11 @@ public class MinimumWindowSubstring {
                     char h = s.charAt(left);
                     left++;
                     if(need.containsKey(h)){
-                        window.put(h, window.get(h) - 1);
-                        if(need.get(h).equals(window.get(h) + 1)){
+
+                        if(need.get(h).equals(window.get(h))){
                             valid--;
                         }
+                        window.put(h, window.get(h) - 1);
                     }
                 }
 
