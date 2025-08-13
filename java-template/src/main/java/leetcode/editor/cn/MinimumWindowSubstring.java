@@ -8,47 +8,44 @@ public class MinimumWindowSubstring {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String minWindow(String s, String t) {
-            Map<Character, Integer> window = new HashMap<>();
             Map<Character, Integer> need = new HashMap<>();
+            Map<Character, Integer> window = new HashMap<>();
+
             for(char c : t.toCharArray()){
-                need.put(c, need.getOrDefault(c, 0) + 1);
+                need.put(c, need.getOrDefault(c, 0) +1);
             }
 
-            int left = 0, right = 0;
+            int left =0, right = 0;
             int valid = 0;
-            int start = 0, len = Integer.MAX_VALUE;
+            int start = 0, length = Integer.MAX_VALUE;
             while(right < s.length()){
                 char c = s.charAt(right);
+                right++;
                 if(need.containsKey(c)){
                     window.put(c, window.getOrDefault(c, 0) + 1);
-                    //Integer对象比较一定要用equals而不是==
                     if(window.get(c).equals(need.get(c))){
                         valid++;
                     }
                 }
-                right++;
-//            System.out.print("left:%d, right:%d\n", left, right);
-                while((valid == need.size()) && (left < right)){
-                    char c1 = s.charAt(left);
-                    if(need.containsKey(c1)){
-                        if (window.get(c1).equals(need.get(c1))) {
-                            int l = right - left;
-                            if (l < len) {
-                                start = left;
-                                len = l;
-                            }
+
+                while(valid == need.size()){
+                    if(right - left < length){
+                        start = left;
+                        length = right - left;
+                    }
+                    char h = s.charAt(left);
+                    left++;
+                    if(need.containsKey(h)){
+                        window.put(h, window.get(h) - 1);
+                        if(need.get(h).equals(window.get(h) + 1)){
                             valid--;
                         }
-                        window.put(c1, window.get(c1) -1);
                     }
-                    left++;
                 }
-            }
-            if(len == Integer.MAX_VALUE){
-                return "";
+
             }
 
-            return s.substring(start, start + len);
+            return length == Integer.MAX_VALUE ? "" : s.substring(start, start + length);
         }
     }
     //leetcode submit region end(Prohibit modification and deletion)
